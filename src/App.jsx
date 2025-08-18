@@ -62,6 +62,20 @@ const App = () => {
       console.log(error);
     }
   }
+
+  const handleDeleteTrack = async (trackId) => {
+    try {
+      const deletedTrack = await trackService.deleteTrack(trackId);
+      if (deletedTrack.error) {
+        throw new Error(deletedTrack.error);
+      }
+      setTracks([...tracks.filter((track) => track._id !== deletedTrack._id)]);
+      setSelected(null);
+      setFormOpened(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
   return (
     <main>
@@ -78,6 +92,7 @@ const App = () => {
         tracks={tracks}
         handleFormView={handleFormView}
         handleSelect={handleSelect}
+        handleDeleteTrack={handleDeleteTrack}
       />
     </main>
   )
