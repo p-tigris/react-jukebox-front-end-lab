@@ -9,7 +9,6 @@ const App = () => {
   const [tracks, setTracks] = useState([]);
   const [formOpened, setFormOpened] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [trackPlaying, setTrackPlaying] = useState(false);
 
   useEffect(() => {
     const fetchTracks = async () => {
