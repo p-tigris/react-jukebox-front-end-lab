@@ -2,11 +2,13 @@ import * as trackService from './services/trackService.js';
 import { useState, useEffect } from 'react';
 import TrackList from "./components/TrackList/TrackList";
 import TrackForm from './components/TrackForm/TrackForm.jsx';
+import NowPlaying from './components/NowPlaying/NowPlaying.jsx';
 
 const App = () => {
   const [tracks, setTracks] = useState([]);
   const [formOpened, setFormOpened] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [trackPlaying, setTrackPlaying] = useState(false);
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -79,7 +81,9 @@ const App = () => {
   
   return (
     <main>
+      <h1>Jukebox</h1>
       <button onClick={handleFormView}>Add New Track</button>
+      <h2>Track List</h2>
       {formOpened ? (
         <TrackForm 
           handleNewTrack={handleNewTrack} 
@@ -94,6 +98,7 @@ const App = () => {
         handleSelect={handleSelect}
         handleDeleteTrack={handleDeleteTrack}
       />
+      <NowPlaying selected={selected}/>
     </main>
   )
 };
