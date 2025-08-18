@@ -1,4 +1,5 @@
 import * as trackService from './services/trackService.js';
+import './App.css';
 import { useState, useEffect } from 'react';
 import TrackList from "./components/TrackList/TrackList";
 import TrackForm from './components/TrackForm/TrackForm.jsx';
@@ -82,8 +83,7 @@ const App = () => {
   return (
     <main>
       <h1>Jukebox</h1>
-      <button onClick={handleFormView}>Add New Track</button>
-      <h2>Track List</h2>
+      <button className="form-button" onClick={handleFormView}>Add New Track</button>
       {formOpened ? (
         <TrackForm 
           handleNewTrack={handleNewTrack} 

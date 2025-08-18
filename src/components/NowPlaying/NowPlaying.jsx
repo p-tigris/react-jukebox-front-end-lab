@@ -1,10 +1,10 @@
 const NowPlaying = (props) => {
     if (props.selected) {
         return (
-            <div>
+            <div className="now-playing">
                 <h2>Now Playing:</h2>
-                <p>Title: {props.selected.title}</p>
-                <p>Artist: {props.selected.artist}</p>
+                <p><span className="properties">Title:</span> {props.selected.title}</p>
+                <p><span className="properties">Artist:</span> {props.selected.artist}</p>
             </div>
         )
     }
