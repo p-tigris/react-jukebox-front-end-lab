@@ -5,7 +5,8 @@ import TrackForm from './components/TrackForm/TrackForm.jsx';
 
 const App = () => {
   const [tracks, setTracks] = useState([]);
-  const [addButtonClicked, setAddButtonClicked] = useState(false);
+  const [formOpened, setFormOpened] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -24,8 +25,9 @@ const App = () => {
     fetchTracks();
   }, []);
 
-  const handleFormView = () => {
-    setAddButtonClicked(!addButtonClicked);
+  const handleFormView = (track) => {
+    if (!track._id) setSelected(null);
+    setFormOpened(!formOpened);
   }
 
   const handleNewTrack = async (formData) => {
@@ -37,7 +39,25 @@ const App = () => {
       }
 
       setTracks([...tracks, newTrack]);
-      setAddButtonClicked(false);
+      setFormOpened(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleSelect = (track) => {
+    setSelected(track);
+  }
+
+  const handleUpdateTrack = async (formData, trackId) => {
+    try {
+      const updatedTrack = await trackService.update(formData, trackId);
+      if (updatedTrack.error) {
+        throw new Error(updatedTrack.error);
+      }
+      setTracks([...tracks.map((track) => track._id === updatedTrack._id ? updatedTrack : track)]);
+      setFormOpened(false);
+      setSelected(updatedTrack);
     } catch (error) {
       console.log(error);
     }
@@ -46,11 +66,19 @@ const App = () => {
   return (
     <main>
       <button onClick={handleFormView}>Add New Track</button>
-      {addButtonClicked ? (
-        <TrackForm handleNewTrack={handleNewTrack}/>
+      {formOpened ? (
+        <TrackForm 
+          handleNewTrack={handleNewTrack} 
+          handleUpdateTrack={handleUpdateTrack}
+          selected={selected}
+        />
         ) : ''
       }
-      <TrackList tracks={tracks}/>
+      <TrackList 
+        tracks={tracks}
+        handleFormView={handleFormView}
+        handleSelect={handleSelect}
+      />
     </main>
   )
 };

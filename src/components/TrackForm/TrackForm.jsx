@@ -7,7 +7,8 @@ const TrackForm = (props) => {
         artist: '',
     }
 
-    const [formData, setFormData] = useState(initialState);
+    const [formData, setFormData] = useState(
+        props.selected ? props.selected : initialState);
 
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -15,11 +16,15 @@ const TrackForm = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        props.handleNewTrack(formData);
+        if (props.selected) {
+            props.handleUpdateTrack(formData, props.selected._id);
+        } else {
+            props.handleNewTrack(formData);
+        }
     }
 
     return (
-        <form onClick={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <label htmlFor="title">Title:</label>
             <input 
                 name="title"
@@ -36,7 +41,7 @@ const TrackForm = (props) => {
                 onChange={handleChange}
                 required
             />
-            <button type="submit">Add New Track</button>
+            <button type="submit">{props.selected ? 'Update' : 'Add New'} Track</button>
         </form>
 
     )
